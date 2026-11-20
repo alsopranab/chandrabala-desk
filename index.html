@@ -1,1 +1,122 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#6966b9"><meta name="description" content="Chandrabala Desk — rubber trading operations, invoices and inventory."><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css?v=4"><title>Chandrabala Desk</title></head><body><aside><div class="brand"><img src="assets/logo.svg" alt="Chandrabala"><div><b>CHANDRABALA</b><small>RUBBER INDUSTRIES</small></div></div><nav aria-label="Main navigation"><button data-view="home">Overview</button><button data-view="sales">Sales & invoices</button><button data-view="purchase">Purchases</button><button data-view="stock">Inventory</button><button data-view="parties">Parties</button><button data-view="settings">Settings</button></nav><div class="asidefoot">Trading operations desk</div></aside><main><header><div><h1 id="heading">Overview</h1><p id="subheading">Manage your transactions and inventory.</p></div><button id="new">+ New transaction</button></header><div id="app"></div></main><dialog id="dlg"><form id="form"><h2 id="formtitle">New transaction</h2><input type="hidden" name="editid"><label>Type<select name="type"><option value="sale">Sale</option><option value="purchase">Purchase</option></select></label><label>Date<input type="date" name="date" required></label><label>Party name<input name="party" required autocomplete="off"></label><label>WhatsApp number (optional)<input name="phone" placeholder="Country code + number"></label><label>Grade<select name="grade"><option>RSS 4</option><option>RSS 5</option><option>Dry Lot</option><option>Good Lot</option><option>Washing Lot</option></select></label><label>Quantity (kg)<input type="number" step=".01" min=".01" name="qty" required></label><label>Rate ₹/kg<input type="number" step=".01" min="0" name="rate" required></label><label>GST %<select name="gst"><option>0</option><option>5</option><option>12</option><option>18</option></select></label><label>Payment status<select name="status"><option value="pending">Pending</option><option value="paid">Paid</option><option value="partial">Partially paid</option></select></label><label>Amount paid ₹ (optional)<input type="number" step=".01" min="0" name="paid"></label><label>Notes<input name="notes"></label><p id="calc">Total: ₹0.00</p><div class="actions"><button type="submit">Save transaction</button><button type="button" class="alt" id="close">Cancel</button></div></form></dialog><dialog id="detail"><div id="detailbody"></div><button class="alt" id="detailclose">Close</button></dialog><dialog id="partyDlg"><form id="partyForm"><h2>Add party</h2><label>Name<input name="name" required></label><label>Phone / WhatsApp<input name="phone"></label><label>Type<select name="type"><option>Customer</option><option>Supplier</option><option>Both</option></select></label><div class="actions"><button>Add party</button><button type="button" id="partyclose" class="alt">Cancel</button></div></form></dialog><script src="app.js?v=4"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Chandrabala Desk — rubber trading invoices, purchases, inventory and parties.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="styles.css?v=5">
+  <title>Chandrabala Desk</title>
+</head>
+<body>
+  <div class="app">
+    <nav class="rail" id="rail" aria-label="Main navigation"></nav>
+    <div class="shell">
+      <header class="topbar">
+        <img class="topbar-logo" src="assets/logo.svg" alt="" width="32" height="32">
+        <div class="topbar-text">
+          <h1 id="title">Overview</h1>
+          <p id="subtitle"></p>
+        </div>
+        <a class="ib" id="settingsLink" href="#/settings" title="Settings" aria-label="Settings"></a>
+      </header>
+      <main id="view" tabindex="-1"></main>
+    </div>
+    <nav class="bottomnav" id="bottomnav" aria-label="Main navigation"></nav>
+  </div>
+
+  <button class="fab" id="fab" type="button" data-act="fab"></button>
+  <div class="snackbar" id="snackbar" role="status" aria-live="polite"></div>
+  <datalist id="partyList"></datalist>
+
+  <!-- Transaction form -->
+  <dialog id="txDlg" aria-labelledby="txTitle">
+    <form class="dbody" id="txForm" autocomplete="off">
+      <h2 id="txTitle">New transaction</h2>
+      <input type="hidden" name="editid">
+      <div class="grid2">
+        <label class="field float"><select name="type"><option value="sale">Sale</option><option value="purchase">Purchase</option></select><span>Type</span></label>
+        <label class="field float"><input type="date" name="date" required><span>Date</span></label>
+        <label class="field full"><input name="party" required list="partyList" placeholder=" "><span>Party name</span></label>
+        <label class="field full"><input name="phone" inputmode="tel" placeholder=" "><span>WhatsApp number (optional)</span></label>
+        <label class="field float"><select name="grade"></select><span>Grade</span></label>
+        <label class="field"><input type="number" name="qty" step="0.01" min="0.01" inputmode="decimal" required placeholder=" "><span>Quantity (kg)</span></label>
+        <label class="field"><input type="number" name="rate" step="0.01" min="0" inputmode="decimal" required placeholder=" "><span>Rate (₹ per kg)</span></label>
+        <label class="field float"><select name="gst"><option value="0">0%</option><option value="5">5%</option><option value="12">12%</option><option value="18">18%</option></select><span>GST</span></label>
+        <small class="hint full" id="stockHint"></small>
+        <label class="check full"><input type="checkbox" name="igst"><span>Inter-state supply (show IGST instead of CGST + SGST)</span></label>
+        <label class="field float"><select name="status"><option value="pending">Pending</option><option value="paid">Paid</option><option value="partial">Partially paid</option></select><span>Payment status</span></label>
+        <label class="field"><input type="number" name="paid" step="0.01" min="0" inputmode="decimal" placeholder=" "><span>Amount paid (₹)</span></label>
+        <label class="field full"><input name="notes" placeholder=" "><span>Notes (optional)</span></label>
+      </div>
+      <div class="totalbar" id="calc"></div>
+      <div class="dactions">
+        <button type="button" class="btn" data-act="close">Cancel</button>
+        <button type="submit" class="btn filled">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Transaction details -->
+  <dialog id="detailDlg" aria-label="Transaction details">
+    <div class="dbody" id="detailBody"></div>
+  </dialog>
+
+  <!-- Party form -->
+  <dialog id="partyDlg" aria-labelledby="partyTitle">
+    <form class="dbody" id="partyForm" autocomplete="off">
+      <h2 id="partyTitle">Add party</h2>
+      <input type="hidden" name="orig">
+      <div class="grid1">
+        <label class="field"><input name="pname" required placeholder=" "><span>Name</span></label>
+        <label class="field"><input name="phone" inputmode="tel" placeholder=" "><span>Phone / WhatsApp</span></label>
+        <label class="field float"><select name="type"><option>Customer</option><option>Supplier</option><option>Both</option></select><span>Type</span></label>
+      </div>
+      <div class="dactions">
+        <button type="button" class="btn" data-act="close">Cancel</button>
+        <button type="submit" class="btn filled">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Record payment -->
+  <dialog id="payDlg" aria-labelledby="payTitle">
+    <form class="dbody" id="payForm" autocomplete="off">
+      <h2 id="payTitle">Record payment</h2>
+      <p class="muted" id="payInfo"></p>
+      <input type="hidden" name="tid">
+      <div class="grid1">
+        <label class="field"><input type="number" name="amount" step="0.01" min="0.01" inputmode="decimal" required placeholder=" "><span>Amount received / paid (₹)</span></label>
+      </div>
+      <div class="dactions">
+        <button type="button" class="btn" data-act="close">Cancel</button>
+        <button type="submit" class="btn filled">Save payment</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Confirm -->
+  <dialog id="confirmDlg" aria-labelledby="cTitle">
+    <form class="dbody" method="dialog">
+      <h2 id="cTitle"></h2>
+      <p class="muted" id="cMsg"></p>
+      <div class="dactions">
+        <button class="btn" value="cancel">Cancel</button>
+        <button class="btn filled danger" id="cOk" value="ok">Delete</button>
+      </div>
+    </form>
+  </dialog>
+
+  <input type="file" id="importFile" accept="application/json,.json" hidden>
+  <div id="printArea" aria-hidden="true"></div>
+
+  <script src="app.js?v=5"></script>
+</body>
+</html>

@@ -1,10 +1,15 @@
 {
   "name": "Chandrabala Desk",
-  "short_name": "Chandrabala Desk",
+  "short_name": "Chandrabala",
+  "description": "Rubber trading invoices, purchases, inventory and parties.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f4f2fb",
-  "theme_color": "#6966b9",
-  "icons": []
+  "background_color": "#f8f9fa",
+  "theme_color": "#1a73e8",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
 }
