@@ -1,10 +1,9 @@
 {
   "name": "Chandrabala Desk",
-  "short_name": "Chandrabala Desk",
+  "short_name": "Chandrabala",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f4f2fb",
-  "theme_color": "#6966b9",
-  "icons": []
+  "theme_color": "#6966b9"
 }
