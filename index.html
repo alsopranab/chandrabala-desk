@@ -1,2 +1,54 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#173b2a"><title>Chandrabala Desk</title><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css"></head><body><div id="app"><h1>Chandrabala Desk</h1><p>Billing & inventory workspace</p><p>Purchase · Sales · Stock · WhatsApp</p><p>Download the full prototype package from the ChatGPT conversation to replace this starter page with the complete app files.</p></div><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#173b2a" />
+  <meta name="description" content="Chandrabala Desk — purchase, sales, inventory and business operations." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23173b2a'/%3E%3Cpath d='M50 17C23 30 22 61 50 82 78 61 77 30 50 17Z' fill='%23d8e5d8'/%3E%3Cpath d='M50 78V34' stroke='%23173b2a' stroke-width='4' fill='none'/%3E%3C/svg%3E" />
+  <title>Chandrabala Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark">C</div><div><strong>CHANDRABALA</strong><span>RUBBER INDUSTRIES</span></div></div>
+    <div class="workspace-label">WORKSPACE</div>
+    <nav class="nav-list" aria-label="Main navigation">
+      <button class="nav-item active" data-view="overview"><span class="nav-icon">◫</span>Overview</button>
+      <div class="nav-caption">TRANSACTIONS</div>
+      <button class="nav-item" data-view="sales"><span class="nav-icon">↗</span>Sales invoices</button>
+      <button class="nav-item" data-view="purchases"><span class="nav-icon">↙</span>Purchase bills</button>
+      <button class="nav-item" data-view="inventory"><span class="nav-icon">▤</span>Inventory</button>
+      <div class="nav-caption">DIRECTORY</div>
+      <button class="nav-item" data-view="parties"><span class="nav-icon">♙</span>Customers & suppliers</button>
+      <button class="nav-item" data-view="reports"><span class="nav-icon">▥</span>Reports</button>
+      <div class="nav-caption">COMMUNICATION</div>
+      <button class="nav-item" data-view="whatsapp"><span class="nav-icon">◉</span>WhatsApp desk <span class="soon-dot"></span></button>
+      <div class="nav-caption">CONFIGURATION</div>
+      <button class="nav-item" data-view="settings"><span class="nav-icon">⚙</span>Business settings</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="sync-line"><span class="sync-dot"></span><span>Local workspace</span></div><small>Chandrabala Desk · Preview</small></div>
+  </aside>
+  <main class="main-area">
+    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button><div class="crumb">Workspace <span>/</span> <b id="pageCrumb">Overview</b></div><div class="top-actions"><span class="today" id="today"></span><button class="avatar" title="Workspace profile">CD</button></div></header>
+    <section class="content" id="content">
+      <div class="welcome-row"><div><div class="eyebrow">BUSINESS OPERATIONS</div><h1>Good afternoon.</h1><p class="subtle">Here’s the pulse of your rubber trading business.</p></div><button class="primary-btn" id="newTransaction">＋ New transaction</button></div>
+      <div class="metrics-grid" id="metrics"></div>
+      <div class="dashboard-grid">
+        <section class="panel activity-panel"><div class="panel-head"><div><h2>Recent transactions</h2><p>Latest purchases and sales recorded</p></div><button class="text-btn" data-goto="reports">View all ↗</button></div><div class="table-wrap"><table><thead><tr><th>TRANSACTION</th><th>PARTY</th><th>DATE</th><th>AMOUNT</th><th>STATUS</th></tr></thead><tbody id="recentRows"></tbody></table></div></section>
+        <section class="panel stock-panel"><div class="panel-head"><div><h2>Stock snapshot</h2><p>Available quantity by grade</p></div><button class="text-btn" data-goto="inventory">Inventory ↗</button></div><div id="stockSnapshot" class="stock-list"></div></section>
+      </div>
+      <section class="panel quick-panel"><div><div class="eyebrow">QUICK ACTIONS</div><h2>Keep operations moving.</h2></div><div class="quick-actions"><button data-action="sale"><span>↗</span><b>Create sales invoice</b><small>Bill a customer</small></button><button data-action="purchase"><span>↙</span><b>Record a purchase</b><small>Log incoming stock</small></button><button data-goto="parties"><span>♙</span><b>Add a party</b><small>Customer or supplier</small></button><button data-goto="whatsapp"><span>◉</span><b>WhatsApp follow-up</b><small>Send a reminder</small></button></div></section>
+    </section>
+  </main>
+</div>
+<div class="modal-backdrop" id="modalBackdrop" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><div><div class="eyebrow" id="modalKicker">NEW ENTRY</div><h2 id="modalTitle">Create transaction</h2></div><button class="close-btn" id="closeModal" aria-label="Close">×</button></div><form id="transactionForm"><div class="form-grid"><label>Type<select id="txType"><option value="sale">Sales invoice</option><option value="purchase">Purchase bill</option></select></label><label>Document date<input id="txDate" type="date" required></label><label class="span-2">Customer / supplier<input id="txParty" list="partyOptions" placeholder="Enter party name" required><datalist id="partyOptions"></datalist></label><label>Product / grade<select id="txProduct"><option>RSS 4</option><option>RSS 5</option><option>Dry Lot</option><option>Good Lot</option><option>Washing Lot</option></select></label><label>Quantity (kg)<input id="txQty" type="number" min="0.01" step="0.01" placeholder="0.00" required></label><label>Rate (₹ / kg)<input id="txRate" type="number" min="0" step="0.01" placeholder="0.00" required></label><label>GST rate<select id="txGst"><option value="0">0%</option><option value="5">5%</option><option value="12">12%</option><option value="18">18%</option></select></label><label class="span-2">Notes (optional)<input id="txNotes" placeholder="Lot reference, vehicle, weighment notes…"></label></div><div class="invoice-preview"><div><small>ESTIMATED TOTAL</small><strong id="estimatedTotal">₹0.00</strong></div><small>Tax calculated on the taxable value</small></div><div class="modal-actions"><button type="button" class="secondary-btn" id="cancelModal">Cancel</button><button type="submit" class="primary-btn">Save transaction</button></div></form></div></div>
+<div class="toast" id="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>
