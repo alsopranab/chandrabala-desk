@@ -1,10 +1,10 @@
-# Google Sheets & Drive backend setup
+# Optional Google Sheets / Drive backup
 
-1. Go to https://script.google.com and create a project.
-2. Paste backend/Code.gs into the editor.
-3. Run setup() once and authorize. It creates a spreadsheet and backup folder.
-4. Run setAppToken() once. In Project Settings > Script Properties, copy APP_TOKEN.
-5. Deploy > New deployment > Web app. Execute as Me. Access: Anyone. Deploy and copy the /exec URL.
-6. In Chandrabala Desk Settings, enter the URL and token and save. Use Restore from cloud to load the latest saved state.
+1. Create a project at https://script.google.com.
+2. Copy `Code.gs` into the Apps Script editor.
+3. Run `setup()` and authorize it. It creates the spreadsheet and backup folder.
+4. Run `setAppToken()`; copy the APP_TOKEN from Script Properties.
+5. Deploy as Web App: execute as you, access as Anyone. Copy the /exec URL.
+6. In the app Settings, enter the URL and token. Use the cloud restore feature only after verifying the data.
 
-Security: Anyone possessing both the URL and token can read/write state. Keep the token private and avoid sharing it. Cloud sync is fire-and-forget via a no-cors POST, so test carefully with noncritical records first. Local browser storage remains a fallback. This is not production-grade accounting software or multi-user authentication.
+The app's local browser storage remains the primary fallback. Cloud backup is not a secure multi-user accounting system. Protect the URL/token, test with noncritical data, and export backups.

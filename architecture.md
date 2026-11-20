@@ -54,6 +54,6 @@ All business tables need `organization_id`, server-side authorization and indexe
 - Verify webhook signatures, rate-limit endpoints, de-duplicate webhook events and retry transient failures with backoff.
 - Provide STOP/opt-out handling and a manual contact history.
 
-## Go-live controls
+## Current prototype limitations\n\nThe deployed static prototype uses browser-local storage and optional Apps Script snapshots. It has no user login, server-side permissions, concurrency control, immutable ledger, automatic WhatsApp API delivery or statutory invoice certification. Treat deletions and edits as prototype operations and export backups frequently.\n\n## Go-live controls
 
 Before real billing, have a qualified accountant validate GSTIN, HSN/SAC, applicable tax rates, invoice numbering, mandatory invoice particulars and current e-invoice/e-way bill applicability. Also implement authentication, backups, restore testing, access logs, audit trails, concurrency-safe stock posting and a reviewed deployment pipeline. The prototype must not be treated as a substitute for statutory accounting software.
