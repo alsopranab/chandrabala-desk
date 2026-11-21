@@ -1,16 +1,11 @@
 # Chandrabala Desk
 
-Mobile-friendly static operations app for Chandrabala Rubber Industries.
+A clean starting point for the Chandrabala internal operations workspace.
 
-- Sales and purchase transactions with edit/delete and payment status
-- Sales invoice print / PDF and WhatsApp message handoff
-- Inventory by rubber grade, opening balances and stock summary
-- Parties, CSV exports, business profile and SVG logo
-- Optional Google Apps Script / Sheets / Drive backup integration
-- Responsive lavender widget-style dashboard
+## Project status
 
-## GitHub Pages
-Deploy from the `root` branch using GitHub Actions. The workflow runs `node --check app.js` before publishing.
+This repository has been reset to a minimal baseline. Application requirements, data model, authentication, and integrations should be defined before implementation.
 
-## Prototype limitations
-The default data store is browser-local storage. It is not shared between browsers or devices. Optional Google Apps Script backup must be separately authorized and tested. Do not treat this prototype as statutory accounting software. Validate GST settings, invoice fields and applicable tax requirements with your accountant.
+## Development
+
+No framework or runtime is selected yet. Keep the initial implementation deliberately small until the product scope and deployment target are confirmed.
